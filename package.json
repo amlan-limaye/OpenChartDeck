@@ -1,0 +1,42 @@
+{
+  "name": "openchartdeck",
+  "version": "0.1.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "Simple, open-source market charts. A lightweight local viewer for multiple market charts.",
+  "engines": {
+    "node": "^24.22.1"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "start:iex": "python3 scripts/start-iex.py",
+    "test": "node --test test/*.test.mjs",
+    "check:release": "node scripts/check-release.mjs",
+    "start:public": "node server.mjs --public",
+    "test:private": "python3 -B test/private-input.test.py && python3 -B test/managed-launcher.test.py"
+  },
+  "dependencies": {
+    "lightweight-charts": "5.2.1"
+  },
+  "files": [
+    "server.mjs",
+    "public/",
+    "lib/",
+    "scripts/",
+    "test/",
+    "launchers/",
+    "docs/",
+    "licenses/",
+    "README.md",
+    "SECURITY.md",
+    "PRIVACY.md",
+    "THIRD_PARTY.md",
+    "LICENSE",
+    "NOTICE",
+    ".env.example",
+    "examples/",
+    "CONTRIBUTING.md"
+  ],
+  "author": "Amlan Limaye"
+}
