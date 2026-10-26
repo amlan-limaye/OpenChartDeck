@@ -8,9 +8,11 @@ The dashboard comes with four saved workspaces — **Gold, AI, Crypto, Indices**
 
 ## Try the offline demo
 
-Use patched **Node.js 24.22.1 or later in the 24.x line** and npm. Python 3 is needed only for private IEX credential entry on macOS/Linux.
+Use patched **Node.js 24.22.1 or later in the 24.x line** and npm. Python 3 is also needed for private IEX credential entry and the launcher verification tests on macOS/Linux.
 
 ```sh
+git clone https://github.com/amlan-limaye/OpenChartDeck.git
+cd OpenChartDeck
 npm ci --ignore-scripts
 npm start
 ```
