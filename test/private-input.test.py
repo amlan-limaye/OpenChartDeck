@@ -20,6 +20,24 @@ SECRET = 'DUMMY_EXPANDED_SECRET'
 
 
 class ExpandedInputTests(unittest.TestCase):
+    def test_no_browser_and_custom_port_reach_the_supervisor(self):
+        spec = importlib.util.spec_from_file_location('expanded_input_options', SCRIPT)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        output = io.StringIO()
+        output.isatty = lambda: True
+        with patch.object(module.sys.stdin, 'isatty', return_value=True), contextlib.redirect_stdout(output), \
+             patch.object(module, 'port_open', return_value=False), \
+             patch.object(module, 'patched_node', return_value='node'), \
+             patch.object(module, 'private_pair', return_value=(KEY, SECRET)), \
+             patch.object(module, 'run_services', return_value=0) as supervisor:
+            self.assertEqual(module.main(['--no-browser', '--port', '4185']), 0)
+        services, url = supervisor.call_args.args
+        self.assertEqual(url, 'http://127.0.0.1:4185/')
+        self.assertFalse(supervisor.call_args.kwargs['browser'])
+        self.assertEqual(services[0]['port'], 4185)
+        self.assertEqual(services[0]['args'][-3:], ['--iex', '--port', '4185'])
+
     def test_non_terminal_refuses_before_input(self):
         p = subprocess.run([sys.executable, str(SCRIPT)], input=KEY+'\n'+SECRET+'\n', capture_output=True, text=True)
         self.assertEqual(p.returncode, 1)

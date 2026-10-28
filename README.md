@@ -41,7 +41,15 @@ Enter your existing key ID and secret into the hidden terminal prompts. On macOS
 
 Supported stock changes validate history and wait for a subscription acknowledgement without another restart, within the 30-symbol limit. The original fourteen symbols are retained; unused additions can be released after ten minutes.
 
-The launcher accepts `--port 4185`. Cboe daily VIX retrieval is disabled by default: add `--cboe` only if you have appropriate rights to use that content. Without it, VIX remains a labelled setup-required position. No Cboe data is bundled. With suitable access, the original prototype populated all 32 positions; several are daily references or explicitly different derivatives.
+To open the dashboard yourself instead of launching a browser automatically, use:
+
+```sh
+python3 scripts/start-iex.py --no-browser --port 4185
+```
+
+The launcher still requires an interactive terminal for hidden credential entry. Once IEX history is ready, it prints the local address; keep the terminal open while using the dashboard. `--port 4185` is optional and can also be used without `--no-browser`.
+
+Cboe daily VIX retrieval is disabled by default: add `--cboe` only if you have appropriate rights to use that content. Without it, VIX remains a labelled setup-required position. No Cboe data is bundled. With suitable access, the original prototype populated all 32 positions; several are daily references or explicitly different derivatives.
 
 Alpaca paper keys also permit simulated trading at the provider. This viewer makes only market-data requests; it does not narrow the key's provider-side permissions. It cannot create/rotate keys, place orders, manage positions, or open accounts. Credentials are kept in process memory, never browser storage or source files. Restart requires private reentry.
 
