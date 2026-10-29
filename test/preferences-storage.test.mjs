@@ -4,12 +4,14 @@ import {readPrefs, sanitizePrefs, STORE_KEY, LEGACY_STORE_KEY} from '../public/c
 
 test('blocked browser storage returns defaults without attempting a write', () => {
   let reads = 0;
+  let writes = 0;
   const storage = {
     getItem() { reads++; throw new Error('Storage access denied'); },
-    setItem() { assert.fail('Reading preferences must not write storage'); },
+    setItem() { writes++; },
   };
   assert.deepEqual(readPrefs(storage), sanitizePrefs({}));
   assert.equal(reads, 1);
+  assert.equal(writes, 0);
 });
 
 test('corrupt current preferences do not resurrect stale legacy selections', () => {
@@ -19,11 +21,13 @@ test('corrupt current preferences do not resurrect stale legacy selections', () 
   ]);
   const before = new Map(values);
   const reads = [];
+  let writes = 0;
   const storage = {
     getItem(key) { reads.push(key); return values.get(key) ?? null; },
-    setItem() { assert.fail('Corrupt preferences must remain available for recovery'); },
+    setItem() { writes++; },
   };
   assert.deepEqual(readPrefs(storage), sanitizePrefs({}));
   assert.deepEqual(reads, [STORE_KEY]);
   assert.deepEqual(values, before);
+  assert.equal(writes, 0);
 });
